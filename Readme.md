@@ -152,10 +152,10 @@
 --pictures
     |--chapter 1
         |--figure.png
-    |--chapter 2.tex
+    |--chapter 2
         |--figure.png
     ...
-    |--chapter n.tex
+    |--chapter n
         |--figure.png
 ```
 ## 4. 注意事项
