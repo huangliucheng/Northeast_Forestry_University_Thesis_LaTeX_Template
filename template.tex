@@ -1,0 +1,115 @@
+% !Mode:: “TeX:UTF-8”
+% !TeX root = ./main.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%东北林业大学%%理学院%%本科生毕业论文LaTeX模板%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2022-2025 LiYu
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+%
+%
+% The Current Maintainer of this work is Li Yu of collage of science in NEFU.
+% If you have any questions about the template, please contact------liy@nefu.edu.cn----
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%注意编译方法：
+%
+% Compile with: xelatex -> biber -> xelatex -> xelatex
+%
+%此模板供东北林业大学学生免费试用，版权归理学院李雨老师所有，任何人修改发布请标明以上说明。
+%=======================================================================================%
+%此模板基于理学院李雨老师的毕业论文Latex模板进行修改, 对原模板进行了封装和简化
+%=======================================================================================%
+
+%==================================================%
+% 导言区, 如果有额外需要使用的包, 请在此处引用
+%==================================================%
+%\usepackage{}
+
+
+%==================================================%
+% 论文相关信息
+%==================================================%
+
+
+\documentclass{nefuthesis}
+\title{论文标题}
+\author{论文作者}
+\supervisor{指导老师}{指导老师职称}
+\degreeinfo{本科毕业论文} % 本科毕业论文 or 硕士毕业论文
+\college{学院}
+\major{专业}{班级}
+\studentid{学号}
+\date{2024年6月}
+\begin{document}
+% 显示封面
+\makecover
+
+% 中文摘要环境, 请在此环境内编写中文摘要
+\begin{abstract}[cn][1]{关键词1；关键词2；关键词3}
+这是中文摘要的内容，摘要的内容一般包括研究背景、研究目的、研究方法、研究结果和结论等。摘要应简明扼要，突出重点，
+避免使用过于专业的术语和缩略语。中文摘要一般在300字左右。
+\end{abstract}
+
+% 英文摘要环境, 请在此环境内编写英文摘要
+\begin{abstract}[en][2]{Keyword1;\sep Keyword2;\sep Keyword3}
+This is English abstract, the content of the abstract generally includes research background, 
+research purpose, research methods, research results and conclusions. The abstract should be concise 
+and highlight the key points, avoiding overly professional terms and abbreviations. The English abstract 
+is generally about 300 words.
+\end{abstract}
+
+% 目录
+\content
+
+% 论文正文环境
+\begin{thesis}
+    % 建议按照以下形式进行正文内容的编写
+    % 将所有的章节放在sections文件夹中, 每一章节使用的图片按照pictures->chapter number->image name的形式进行命名
+    % 例如：第一章的图片放在pictures->chapter1->image name.png中
+    % \input{sections/chapter1.tex}
+    % \input{sections/chapter2.tex}
+    % \input{sections/chapter3.tex}
+
+    \section{一级标题1}
+    \subsection{二级标题1}
+    \subsubsection{三级标题1}
+
+    \section{一级标题2}
+    \subsection{二级标题2}
+    \subsubsection{三级标题2}
+
+\end{thesis} 
+
+% 附录环境, 请在此环境内编写附录
+\begin{Appendix}
+    % \input{sections/appendix.tex}
+\end{Appendix}
+
+% 结论环境, 请在此环境内编写结论
+\begin{conclusion}
+    % \input{sections/conclusion.tex}
+\end{conclusion}
+
+\references{references.bib} % 参考文献
+
+% \begin{biblist}
+%     \bibitem{TSHU}张三. 图书名[M]. 第一版. 哈尔滨: 东北林业大学出版社, 2023: 1-10.
+%     \bibitem{QKLW}张三. 期刊论文名[J]. 东北林业大学自然科学学报. 2023, 1(2):1-3.
+%     \bibitem{HYLW}张三. 会议论文名[C]. 李四（编者名). 东北林业大学数学会议, 2023. 哈尔滨， 东北林业大学出版社, 2023: 1-3.
+%     \bibitem{XWLW}张三. 硕士论文名[D]. 东北林业大学硕士论文. 2023:1-3. 
+%     \bibitem{ZZWS2020}Zhu N, Zhang D, Wang W, et al. A novel coronavirus from patients with pneumonia in China[J]. New England Journal of Medicine. 2020, 382: 727-733.
+%     \bibitem{ZDX2021}Zhang H, Du F, Cao X, et al. Clinical characteristics of coronavirus disease 2019 (COVID-19) in patients out of Wuhan from China: a case control study[J]. BMC Infectious Diseases. 2021, 21: 207.
+%     \bibitem{HBJ2022}Hassan M A, Bala A A, Jatau A I. Low rate of COVID-19 vaccination in Africa: a cause for concern[J]. Therapeutic Advances in Vaccines Immunotherapy. 2022, 10: 1-3.
+% \end{biblist}
+
+% 致谢环境, 请在此环境内编写致谢
+\begin{acknowledgement}
+    % \input{sections/acknowledgement.tex}
+\end{acknowledgement}
+
+% % 原创性声明和版权授权书命令
+\declaration
+
+\end{document} 
