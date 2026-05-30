@@ -1,52 +1,65 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{nefuthesis}[2023/10/01 v1.0.0 NEFU Thesis Class]
-\LoadClass[UTF8,AutoFakeBold,twoside,a4paper]{article}
-
-\PassOptionsToPackage{patch=}{microtype}
-
+\LoadClass[twoside,a4paper]{article}
 %========================================%
 % 加载需要的宏包
 %========================================%
-\RequirePackage[UTF8]{ctex} % 加载ctex包
-\RequirePackage[utf8]{inputenc} % allow utf-8 input
-\RequirePackage[T1]{fontenc}    % use 8-bit T1 fonts
-\RequirePackage{hyperref}       % hyperlinks
-\RequirePackage{url}            % simple URL typesetting
-\RequirePackage{booktabs}       % professional-quality tables
+\RequirePackage[UTF8,fontset=windows]{ctex}
+\ifdefined\setCJKfamilyfont
+  \setCJKfamilyfont{zhhei}{SimHei}[AutoFakeBold=2]
+  \setCJKfamilyfont{zhsong}{SimSun}[AutoFakeBold=3]
+\fi
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{hyperref}
+\RequirePackage{url}
+\RequirePackage{booktabs}
 \RequirePackage{tabularx}
 \RequirePackage{multirow}
-\RequirePackage{amsfonts}       % blackboard math symbols
-\RequirePackage{nicefrac}       % compact symbols for 1/2, etc.
-\RequirePackage{microtype}      % microtypography
+\RequirePackage{amsfonts}
+\RequirePackage{nicefrac}
 \RequirePackage{lipsum}
 \RequirePackage{enumitem}
 \RequirePackage{geometry}
 \RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{bm}                  % 提供\bm命令用于粗体数学符号
+\RequirePackage{mathrsfs}
 \RequirePackage{ntheorem}
+\RequirePackage{color}
 \RequirePackage{cite}
+\RequirePackage{mathtools}
 \RequirePackage{listings}
 \RequirePackage{setspace}
-\RequirePackage{times}          % 英文使用Times New Roman
+\RequirePackage{times}
 \RequirePackage{graphicx}
-\RequirePackage{subfigure}
-\RequirePackage[subfigure]{tocloft}      %必须这么写，否则会报错
+\RequirePackage{subcaption}
+\RequirePackage{tocloft}
+\RequirePackage{ctexsize}
+\RequirePackage{type1cm}
+\RequirePackage{titlesec}
 \RequirePackage{caption}
 \RequirePackage{fancyhdr}
-\RequirePackage{fontspec}
-\RequirePackage{titletoc}
-\RequirePackage{type1cm}
-\RequirePackage{titlesec}       %定义各级标题的格式
-\RequirePackage{gbt7714}        % 国标引用格式
 \RequirePackage{xstring}
 \RequirePackage{ifthen}
-\RequirePackage{xparse}
+\RequirePackage[sort&compress]{gbt7714}
+\RequirePackage{float}
 
 %========================================%
 % 设置文档相关格式
 %========================================%
 \geometry{a4paper,left=2.4cm,right=2.4cm,top=2.6cm,bottom=2.4cm} % Word标准页面
-\citestyle{numbers} % 引用格式
-\setmainfont{TeX Gyre Termes}
+
+%========================================%
+% 超链接设置
+%========================================%
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black,
+	filecolor=black,
+	urlcolor=blue,
+	citecolor=black,
+}
 
 %========================================%
 % 设置文档全局通用命令
@@ -63,127 +76,242 @@
 \newcommand{\xiaowu}{\fontsize{9pt}{13.5pt}\selectfont}
 \newcommand{\liuhao}{\fontsize{7.5pt}{11.25pt}\selectfont}
 \newcommand{\cnspacing}[2][0.5em]{%
-  \StrLen{#2}[\mylen]%
-  \newcounter{i}%
-  \setcounter{i}{1}% % 从第一个字符开始
-  \whiledo{\value{i}<\mylen\relax}{% % 注意添加 \relax
-    \StrChar{#2}{\thei}%
-    \hspace{#1}% % 输出当前字符+空格
-    \stepcounter{i}%
-  }%
-  \ifnum\mylen>0\relax % 确保字符串非空
-    \StrChar{#2}{\mylen}% % 直接使用 \mylen
+  \begingroup
+  \StrLen{#2}[\nef@len]%
+  \count@=1\relax
+  \loop\ifnum\count@<\nef@len\relax
+    \StrChar{#2}{\the\count@}\hspace{#1}%
+    \advance\count@ by 1\relax
+  \repeat
+  \ifnum\nef@len>0\relax
+    \StrChar{#2}{\nef@len}%
   \fi
+  \endgroup
 }
 \newcommand{\sep}{~}
 
+\citestyle{numbers} % 国标引用格式
+\newcommand{\citeup}[1]{\textsuperscript{\cite{#1}}}
+
+\theorembodyfont{\upshape}
 \newtheorem{theorem}{定理}[section]
 \newtheorem{definition}{定义}[section]
 \newtheorem{lemma}{引理}[section]
 \newtheorem{example}{例}[section]
 \newtheorem{deduction}{推论}[section]
+\newtheorem{proposition}{命题}[section]
+\newtheorem{property}{性质}[section]
+\newtheorem{remark}{注释}[section]
 \newenvironment{proof}[1][证明]{\noindent{\heiti{#1}}\quad}{\hfill $\square$\par}
 \newenvironment{solve}[1][解]{\noindent{\heiti{#1}}\quad}{\hfill $\square$\par}
 
+\numberwithin{equation}{section}
+\numberwithin{table}{section}
+\numberwithin{figure}{section}
+
+\renewcommand {\thetable} {\thesection{}-\arabic{table}}
+%根据学校模板定义表名
+\renewcommand {\thefigure} {\thesection{}-\arabic{figure}}
+%根据学校模板定义图名
+\renewcommand {\theequation} {\thesection{}-\arabic{equation}}
+
+% 图表标题格式
+\captionsetup[figure]{font=small,name={图},labelsep=space}
+\captionsetup[table]{font={small},name={表},labelsep=space,justification=raggedright}
 
 %========================================%
 % 文档相关命令
 %========================================%
-\renewcommand{\headrule}{%
-\hrule width\headwidth height 0.5pt \vskip1pt
-\hrule width\headwidth height 0.5pt
-\vskip6mm
-}
+% 双线页眉设置
+\def\headrule{{\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi%
+\hrule\@height 0.5pt \@width\headwidth\vskip1pt%上面线为0.5pt粗
+\hrule\@height 0.5pt\@width\headwidth  %下面0.5pt粗
+\vskip-2\headrulewidth\vskip-1pt}      %两条线的距离1pt
+  \vspace{6mm}}     %双线与下面正文之间的垂直间距
+
 \renewcommand{\baselinestretch}{1.0}% 设置行间距
 \let\oldsection\section
 \renewcommand{\section}{\clearpage\oldsection}
+\titlespacing*{\section}
+  {0pt}{*}{5pt}
+\titlespacing*{\subsection}
+  {0pt}{*}{5pt}
+\titlespacing*{\subsubsection}
+  {0pt}{*}{5pt}
 
-
-
-% ====== 封面信息存储命令 ======
-\newcommand\@schoolcode{10225} % 默认学校代码
-\newcommand\schoolcode[1]{\renewcommand\@schoolcode{#1}}
-
-\newcommand\@universitylogo{pictures/Cover/logo.png}
-\newcommand\universitylogo[1]{\renewcommand\@universitylogo{#1}}
-
-\newcommand\@degreeinfo{硕士毕业论文}
-\newcommand\degreeinfo[1]{\renewcommand\@degreeinfo{#1}}
-
-\newcommand\@college{}
-\newcommand\college[1]{\renewcommand\@college{#1}}
-
-\newcommand\@major{}
-\newcommand\@class{}
-\newcommand\major[2]{%
-  \renewcommand\@major{#1}%
-  \renewcommand\@class{#2}%
-}
-
+% ====== 封面信息存储命令 ======%
+%=========内部命令============%
+\newcommand\@schoolcode{10225}
 \newcommand\@studentid{}
-\newcommand\studentid[1]{\renewcommand\@studentid{#1}}
+\newcommand\@titlecn{}
+\newcommand\@titleen{}
+\newcommand\@authorcn{}
+\newcommand\@authoren{}
+\newcommand\@supervisorcn{}
+\newcommand\@supervisoren{}
+\newcommand\@supervisortitlecn{}
+\newcommand\@supervisortitleen{}
+\newcommand\@degreecn{硕士}
+\newcommand\@degreeen{Master Degree}
+\newcommand\@specialtycn{数学}
+\newcommand\@specialtyen{Mathematics}
+\newcommand\@subdate{}
+\newcommand\@defensedatecn{}
+\newcommand\@defensedateen{}
+\newcommand\@universitycn{东北林业大学}
+\newcommand\@universityen{Northeast Forestry University}
+\newcommand\@grantdate{}
+\newcommand\@chairman{}
+\newcommand\@reviewer{}
 
-\newcommand\@supervisor{}
-\newcommand\@supervisortitle{}
-\newcommand{\supervisor}[2]{%
-  \renewcommand\@supervisor{#1}%
-  \renewcommand\@supervisortitle{#2}%
+
+% 学校代码
+\newcommand\schoolcode[1]{
+  \renewcommand\@schoolcode{#1}
 }
-
-\renewcommand\title[1]{\renewcommand\@title{#1}}
-\renewcommand\author[1]{\renewcommand\@author{#1}}
-\renewcommand\date[1]{\renewcommand\@date{#1}} 
+% 学号
+\newcommand\studentid[1]{
+  \renewcommand\@studentid{#1}
+}
+% 中英文标题
+\renewcommand\title[2]{
+  \renewcommand\@titlecn{#1}
+  \renewcommand\@titleen{#2}
+  }
+% 中英文作者
+\renewcommand\author[2]{
+  \renewcommand\@authorcn{#1}
+  \renewcommand\@authoren{#2}
+  }
+% 指导老师及职称
+\newcommand\supervisor[4]{
+  \renewcommand\@supervisorcn{#1}
+  \renewcommand\@supervisortitlecn{#2}
+  \renewcommand\@supervisoren{#3}
+  \renewcommand\@supervisortitleen{#4}
+}
+% 学位级别
+\newcommand\degree[2]{
+  \renewcommand\@degreecn{#1}
+  \renewcommand\@degreeen{#2}
+}
+% 学科专业
+\newcommand\specialty[2]{
+  \renewcommand\@specialtycn{#1}
+  \renewcommand\@specialtyen{#2}
+}
+% 论文提交日期
+\newcommand\subdate[1]{
+  \renewcommand\@subdate{#1}
+}
+% 答辩日期
+\newcommand\defensedate[2]{
+  \renewcommand\@defensedatecn{#1}
+  \renewcommand\@defensedateen{#2}
+}
+% 授予学位单位
+\newcommand\university[2]{
+  \renewcommand\@universitycn{#1}
+  \renewcommand\@universityen{#2}
+}
+% 授予学位日期
+\newcommand\grantdate[1] {
+  \renewcommand\@grantdate{#1}
+}
+% 答辩委员会主席
+\newcommand\chairman[1]{
+  \renewcommand\@chairman{#1}
+}
+% 评阅人
+\newcommand\reviewer[1]{
+  \renewcommand\@reviewer{#1}
+}
 
 % ====== 封面生成命令 ======
-\newcommand\makecover{
+\newcommand{\makecover}{
   \clearpage
+  \thispagestyle{empty}
+  %======= 中文封面 =======%
   \pagenumbering{gobble}
-  \begin{titlepage}
-    \vspace*{0.5cm}
-    \raggedleft{\songti\sihao 学校代码：\@schoolcode}
-    
-    \centering
-    \vspace{1cm}
-    \includegraphics[width=7.24cm]{\@universitylogo}
-    
-    \vspace{1cm}
-    {\heiti\fontsize{42pt}{1.2}\selectfont \cnspacing{\@degreeinfo}}
+  \setcounter{page}{1}
+  \vspace{0.5cm}
+  \begin{flushright}
+    \hspace*{0pt}\hspace{-1pt}%
+    \begin{tabular}{ll}
+      {\songti  \sihao   {学校代码：}}&{\sihao \@schoolcode }\\
+      {\songti \sihao   学\quad\quad  号：} &{\sihao \@studentid }
+    \end{tabular}
+  \end{flushright}
+  \vspace{0.5cm}
+  \begin{center}
+    \includegraphics[width=7.8cm]{pictures/Cover/logo1.png}
+
+    \vspace{1.35cm}
+
+    % 封面内容
+    {\heiti \erhao \@titlecn\\\vspace{0.2cm}}
+
+    \vspace{2.2cm}
+    {\kaishu \xiaoyi \@authorcn}
+    \vspace{1.5cm}
+    \begin{table}[!h]
+      \centering
+        \tabcolsep=0.5cm
+	    \renewcommand\arraystretch{2.2}
+        \begin{tabular}{llll}
+            {\heiti \sihao 指导教师姓名：}&{\songti \sihao  \@supervisorcn \quad \@supervisortitlecn}&{ \songti \sihao \@universitycn }&\\%
+            {\heiti \sihao 申请学位级别：}&{\songti \sihao \cnspacing{\@degreecn}}&{\heiti \sihao 学\ \ \ 科\ \ \  专\ \  业：} &{\songti \sihao \cnspacing{\@specialtycn}}\\
+            {\heiti \sihao 论文提交日期：}&{\songti \sihao \@subdate}& {\heiti \sihao 论文答辩日期：} &{\songti \sihao \@defensedatecn}\\
+            {\heiti \sihao 授予学位单位：}&{\songti \sihao  \@universitycn}& {\heiti \sihao 授予学位日期：} &{\songti \sihao \@grantdate}
+        \end{tabular}
+        \vspace{1cm}
+        \begin{tabular}{rrrl}
+         &\multicolumn{2}{r} {\quad \quad\quad\heiti  \sihao 答辩委员会主席：}&{\songti \sihao \@chairman}\\
+         &\multicolumn{2}{r} {\quad \quad\quad \heiti \sihao  论\ \ 文\ \ 评\ \ 阅\ \ 人：} &{\songti \sihao \@reviewer}
+        \end{tabular}
+    \end{table}
+
+    \vspace{2.2cm}
+    \includegraphics[width=6.8cm]{pictures/Cover/logo2.png}
+  \end{center}
+  \clearpage
+
+  %======= 英文封面 =======%
+  \pagenumbering{gobble}
+  \vspace{0.5cm}
+  \begin{flushright}
+    \begin{tabular}{ll}
+      {\xiaosi University Code:}&{\xiaosi \@schoolcode }\\
+      {\xiaosi Register Code:} &{\xiaosi \@studentid }
+    \end{tabular}
+  \end{flushright}
+  \vspace{2cm}
+  \begin{center}
+    {\xiaoer Dissertation for the Degree of Master}
     
     \vspace{2cm}
-    {\heiti\erhao{\@title\par}}
+    
+    {\erhao \@titleen\\\vspace{0.2cm}}
     
     \vspace{3cm}
-    {\kaishu\xiaoyi \@author}
-    
-    \vspace{0.8cm}
-    \begin{table}[!h]
-        \centering
-        \tabcolsep=0.5cm
-        \renewcommand\arraystretch{2.2}
-        \begin{tabular}{lc}
-            \heiti\sihao 学\quad \quad 院： & 
-            \songti\sihao \@college \\ 
-            \cline{2-2} 
-            
-            \heiti\sihao 专业班级： & 
-            \songti\sihao \@major ~ \@class \\ 
-            \cline{2-2} 
-            
-            \heiti\sihao 指导教师： & 
-            \songti\sihao \@supervisor\quad\@supervisortitle \\ 
-            \cline{2-2} 
-            
-            \heiti\sihao 学\quad \quad 号： & 
-            \songti\sihao \@studentid \\ 
-            \cline{2-2} 
-          \end{tabular}
-    \end{table}
-    
-    \vspace{2cm}
-    {\songti\sihao \@date}
-  \end{titlepage}
+  \end{center}
+  \begin{table}[!h]
+    \centering
+    \tabcolsep=0.5cm
+    \renewcommand\arraystretch{2.2}
+    \begin{tabular}{ll}
+      {\sihao \bfseries Candidate:}&{\sihao \@authoren}\\
+      {\sihao \bfseries Supervisor:} &  {\sihao \@supervisoren \quad \@supervisortitleen}\\
+      {\sihao \bfseries Associate Supervisor:}&{\sihao }\\
+      {\sihao \bfseries Academic Degree Applied for:}&{\sihao \@degreeen}\\
+      {\sihao \bfseries Speciality:}&{\sihao \@specialtyen}\\
+      {\sihao \bfseries Date of Oral Examination:}&{\sihao \@defensedateen}\\
+      {\sihao \bfseries University:}&{\sihao \@universityen}
+    \end{tabular}
+  \end{table}
   \clearpage
 }
+
 
 %========================================%
 % 中英文摘要环境
@@ -201,17 +329,17 @@
   \pagestyle{fancy}%
   \fancyhf{}%
   \ifthenelse{\equal{#1}{cn}}{% 中文摘要
-    \fancyhead[C]{\songti \wuhao 摘要}
+    \fancyhead[C]{\songti \xiaowu 摘要}
     \phantomsection\addcontentsline{toc}{section}{摘要}
     \begin{center}
-      {\heiti \xiaoer 摘要}
+      {\heiti \xiaoer \bfseries 摘要}
     \end{center}
     \songti \xiaosi \indent
   }{% 英文摘要
-    \fancyhead[C]{\normalfont \wuhao Abstract}
+    \fancyhead[C]{\xiaowu Abstract}
     \phantomsection\addcontentsline{toc}{section}{Abstract}
     \begin{center}
-      {\normalfont \bfseries \xiaoer Abstract}
+      {\xiaoer \bfseries Abstract}
     \end{center}
     \normalfont \xiaosi \indent
   }
@@ -224,7 +352,7 @@
   \ifthenelse{\equal{\abstract@lang}{cn}}{% 中文关键词
     {\heiti \xiaosi \textbf{关键词}\quad\heiti \xiaosi \abstract@keywords}
   }{% 英文关键词
-    {\normalfont \bfseries \xiaosi Keywords:\quad\normalfont \xiaosi \abstract@keywords}
+    {\normalfont \bfseries \xiaosi Keywords\quad\normalfont \xiaosi \abstract@keywords}
   }
   \clearpage
 }
@@ -233,35 +361,36 @@
 % 目录命令
 %========================================%
 % 目录点线样式
+\newcommand{\nef@tocfill}[2]{%
+  \leaders\hbox{$\m@th\mkern #1 mu\hbox{#2}\mkern #1 mu$}\hfill
+}
 \renewcommand\cftsecdotsep{0.6}
-\renewcommand{\cftdot}{$\cdot$}
-\renewcommand{\cftsecleader}{\cftdotfill{\cftsecdotsep}}
-\renewcommand{\cftsubsecleader}{\cftdotfill{0.6}}
-\renewcommand{\cftsubsubsecleader}{\cftdotfill{0.6}}
+\renewcommand{\cftsecleader}{\nef@tocfill{\cftsecdotsep}{$\cdot$}}
+\renewcommand{\cftsubsecleader}{\hspace{0.3em}\nef@tocfill{0.6}{.}}
+\renewcommand{\cftsubsubsecleader}{\hspace{0.3em}\nef@tocfill{0.6}{.}}
 
 % 目录条目间距
-\setlength{\cftbeforesecskip}{2pt}
-\setlength{\cftbeforesubsecskip}{2pt}
-\setlength{\cftbeforesubsubsecskip}{2pt}
+\setlength{\cftbeforesecskip}{5pt}
+\setlength{\cftbeforesubsecskip}{5pt}
+\setlength{\cftbeforesubsubsecskip}{5pt}
 \setlength{\cftbeforepartskip}{10pt}
+\setlength{\cftaftertoctitleskip}{10pt}
+\setlength{\cftsubsecindent}{0pt}
+\setlength{\cftsubsecnumwidth}{24pt}
+\setlength{\cftsubsubsecindent}{0pt}
+\setlength{\cftsubsubsecnumwidth}{30pt}
 
 % 目录条目字体设置
 \renewcommand{\cftsecfont}{\heiti\xiaosi}
 \renewcommand{\cftsubsecfont}{\songti\xiaosi}
 \renewcommand{\cftsubsubsecfont}{\songti\xiaosi}
+\renewcommand{\cftsecpagefont}{\heiti\xiaosi}
+\renewcommand{\cftsubsecpagefont}{\songti\xiaosi}
+\renewcommand{\cftsubsubsecpagefont}{\songti\xiaosi}
 
-% 目录标题设置
-\renewcommand*\contentsname{\centering 目录}
+% 目录标题居中
+\renewcommand*\contentsname{目录}
 \setlength{\cftsecindent}{0pt}
-
-% 超链接颜色
-\hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-    filecolor=black,
-    urlcolor=blue,
-    citecolor=black
-}
 
 % 一级标题格式
 \titleformat{\section}
@@ -284,34 +413,32 @@
     {0pt}
     {}
 
-% 目录内容格式
-\titlecontents{subsection}[2.3em]
-    {\songti\xiaosi}
-    {\contentslabel{2em}}
-    {}
-    {~\titlerule*[0.3pc]{$.$}~\contentspage}
-
-\titlecontents{subsubsection}[2.8em]
-    {\songti\xiaosi}
-    {\contentslabel{2.5em}}
-    {}
-    {~\titlerule*[0.3pc]{$.$}~\contentspage}
-
 \newcommand{\content}{
-    \clearpage % 新建页
-    %%%%%%%%%%%%%%%%%%%%%目录%%%%%%%%%%%%%%%%%%
-    \phantomsection\addcontentsline{toc}{section}{目录}%放进目录
-    \fancypagestyle{plain}{\pagestyle{fancy}}
+  \clearpage % 新建页
+  %%%%%%%%%%%%%%%%%%%%%目录%%%%%%%%%%%%%%%%%%
+  \begingroup
+  \raggedbottom
+  \pagestyle{fancy}
+  \fancyhf{}
+  %C：页面中间；O：奇数页；\leftmark：表示“一级标题”
+  \fancyhead[CO, CE]{\songti \xiaowu  目录}
+  %C：页面中间；E：偶数页；\rightmark：表示"二级标题"
+  \fancyfoot[CO, CE]{\thepage}
+  \fancypagestyle{plain}{
     \fancyhf{}
-    %C：页面中间；O：奇数页；\leftmark：表示“一级标题”
-    \fancyhead[CO, CE]{\songti \wuhao  目录}
-    %C：页面中间；E：偶数页；\rightmark：表示“二级标题”
-    \fancyfoot[CO, CE]{\thepage\ }
+    \fancyhead[CO, CE]{\songti \xiaowu  目录}
+    \fancyfoot[CO, CE]{\thepage}
+  }
 
-    \begin{spacing}{1}
-    \centering
-    \tableofcontents % 目录
-    \end{spacing}
+  \begin{spacing}{1}
+  \centering
+  \begingroup
+  \tableofcontents
+  \endgroup
+  \end{spacing}
+
+  \clearpage
+  \endgroup
 }
 
 
@@ -327,11 +454,11 @@
   \pagestyle{fancy}
   \fancyhf{}
   %C：页面中间；O：奇数页；\leftmark：表示“一级标题”
-  \fancyhead[CO]{\songti \wuhao  \leftmark}
-  %C：页面中间；E：偶数页；\rightmark：表示“二级标题”
-  \fancyhead[CE]{\songti \wuhao 东北林业大学本科毕业论文}
+  \fancyhead[CO]{\songti \xiaowu \nouppercase{\leftmark}}
+  %C：页面中间；E：偶数页；\rightmark：表示"二级标题"
+  \fancyhead[CE]{\songti \xiaowu 东北林业大学硕士学位论文}
   % 设置页脚，页眉的位置上也可以放置页码
-  \fancyfoot[CO, CE]{- \thepage\ -}
+  \fancyfoot[CO, CE]{\thepage}
 
   \songti \xiaosi
   \theorembodyfont{\bfseries\upshape}
@@ -348,9 +475,9 @@
   \pagestyle{fancy}
   \fancyhf{} % 清除页眉页脚
   % 设置页眉和页脚
-  \fancyhead[CO]{\songti \wuhao 附录}
-  \fancyhead[CE]{\songti \wuhao 东北林业大学本科毕业论文}
-  \fancyfoot[CO, CE]{- \thepage\ -}
+  \fancyhead[CO]{\songti \xiaowu 附录}
+  \fancyhead[CE]{\songti \xiaowu 东北林业大学硕士学位论文}
+  \fancyfoot[CO, CE]{\thepage}
   \section*{附录}
   \phantomsection\addcontentsline{toc}{section}{附录}%放进目录
   \songti \xiaosi
@@ -366,9 +493,9 @@
     \renewcommand{\baselinestretch}{1.0}%%设置行间距
     \pagestyle{fancy}
     \fancyhf{}
-    \fancyhead[CO]{\songti \wuhao  结论}
-    \fancyhead[CE]{\songti \wuhao 东北林业大学本科毕业论文}
-    \fancyfoot[CO, CE]{- \thepage\ -}
+    \fancyhead[CO]{\songti \xiaowu  结论}
+    \fancyhead[CE]{\songti \xiaowu 东北林业大学硕士学位论文}
+    \fancyfoot[CO, CE]{\thepage}
     \section*{结论}
     \phantomsection\addcontentsline{toc}{section}{结论}%放进目录
     \songti \xiaosi
@@ -380,46 +507,68 @@
 % 参考文献命令和环境
 %========================================%
 % 参考文献(bibtex)
-\newcommand{\references}[1]{
-    \pagestyle{fancy}
-    \fancyhf{}
-    \fancyhead[CO]{\songti \wuhao  参考文献}
-    \fancyhead[CE]{\songti \wuhao 东北林业大学本科毕业论文}
-    \fancyfoot[CO, CE]{- \thepage\ -}
-    \section*{参考文献}
-    \renewcommand{\section}[2]{}
-    \phantomsection\addcontentsline{toc}{section}{参考文献}%放进目录
-    \songti \xiaosi
-    \bibliographystyle{gbt7714-numerical} % 国标引用格式
-    \bibliography{#1}
-}
-
-%参考文献(bibitem)
-\newenvironment{biblist}{
+\newcommand{\references}[1]{%
+  \clearpage
+  \begingroup
   \pagestyle{fancy}
   \fancyhf{}
-  \fancyhead[CO]{\songti \wuhao  参考文献}
-  \fancyhead[CE]{\songti \wuhao 东北林业大学本科毕业论文}
-  \fancyfoot[CO, CE]{- \thepage\ -}
+  \fancyhead[CO]{\songti \xiaowu  参考文献}
+  \fancyhead[CE]{\songti \xiaowu 东北林业大学硕士学位论文}
+  \fancyfoot[CO, CE]{\thepage}
   \section*{参考文献}
-  \renewcommand{\section}[2]{}
   \phantomsection\addcontentsline{toc}{section}{参考文献}%放进目录
-  \bibliographystyle{gbt7714-numerical} % 国标引用格式
-  \begin{thebibliography}{99}% 参考文献，{}内表示序号最大位数（两位）
-}{
-\end{thebibliography}
+  \songti \xiaosi
+
+  % BibTeX 生成的 thebibliography 环境内部会调用 \section*{\refname}。
+  % 这里只需要隐藏那一行“自动标题”，不能把 \section 全局改掉，否则后续章节标题都会消失。
+  \renewcommand{\section}[2]{}%
+  \bibliographystyle{gbt7714-unsrt-no-uppercase.bst} % 国标引用格式
+  % \bibliographystyle{unsrt-custom.bst}
+  \bibliography{#1}
+    \clearpage
+  \endgroup
+}
+
+% 参考文献(bibitem)
+% \newenvironment{biblist}{
+%   \pagestyle{fancy}
+%   \fancyhf{}
+%   \fancyhead[CO]{\songti \wuhao  参考文献}
+%   \fancyhead[CE]{\songti \wuhao 东北林业大学本科毕业论文}
+%   \fancyfoot[CO, CE]{- \thepage\ -}
+%   \section*{参考文献}
+%   \renewcommand{\section}[2]{}
+%   \phantomsection\addcontentsline{toc}{section}{参考文献}%放进目录
+%   \bibliographystyle{gbt7714-numerical} % 国标引用格式
+%   \begin{thebibliography}{99}% 参考文献，{}内表示序号最大位数（两位）
+% }{
+% \end{thebibliography}
+% }
+
+%========================================%
+% 已发表论文环境
+%========================================%
+\newenvironment{published}{
+    \pagestyle{fancy}
+    \fancyhf{}
+    \fancyhead[CO, CE]{\songti \xiaowu  攻读学位期间发表的学术论文}
+    \fancyfoot[CO, CE]{\thepage}
+    \section*{攻读学位期间发表的学术论文}
+    \phantomsection\addcontentsline{toc}{section}{攻读学位期间发表的学术论文}%放进目录
+    \songti \xiaosi
+}
+{
+  \clearpage
 }
 
 %========================================%
 % 致谢环境
 %========================================%
 \newenvironment{acknowledgement}{
-  \clearpage
     \pagestyle{fancy}
     \fancyhf{}
-    \fancyhead[CO]{\songti \wuhao  致谢}
-    \fancyhead[CE]{\songti \wuhao 东北林业大学本科毕业论文}
-    \fancyfoot[CO, CE]{- \thepage\ -}
+    \fancyhead[CO, CE]{\songti \xiaowu  致谢}
+    \fancyfoot[CO, CE]{\thepage}
     \section*{致谢}
     \phantomsection\addcontentsline{toc}{section}{致谢}%放进目录
     \songti \xiaosi
@@ -439,10 +588,7 @@
     \vspace{0.8cm}
 
     {\songti \sihao 
-    本人郑重声明：所提交的毕业论文是本人在导师指导下独立进行研究工作所取得的成果。对本文的研究工作做出重要贡献的个人和集体，
-    均已在文中以明确方式注明，其它未注明部分不包含他人已发表或撰写过的研究成果，不存在购买、由他人代写、剽窃和伪造数据等学术不端行为。
-
-    本人愿为此声明承担法律责任.}
+    本人声明所呈交的论文是我个人在导师指导下进行的研究工作及取得的研究成果。尽我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包括为获得东北林业大学或其他教育机构的学位或证书而使用过的材料。与我一同工作的同志对本研究所做的任何贡献已在论文中作了明确的说明并表示了谢意。\par}
     \vspace{2.5cm}
 
     {\songti \sihao 
