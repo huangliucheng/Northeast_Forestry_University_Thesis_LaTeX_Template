@@ -29,67 +29,222 @@
 \usepackage{tabularx}
 
 %==================================================%
-% 论文相关信息
+% 一、封面信息（在 \begin{document} 之前设置）
+%    设置完毕后使用 \makecover 生成中英文封面
 %==================================================%
-\title{分类任务下证据深度学习的不确定性估计问题}{Uncertainty estimation problem of evidence deep learning in classification tasks}
-\author{黄刘诚}{Huang Liucheng}
-\studentid{2023113155}
-\supervisor{马晓剑}{副教授}{Xiaojian Ma}{Associate Professor}
-\subdate{2026年3月} % 论文提交日期
-\degree{硕士}{Master} % 本科 or 硕士
-\specialty{数学}{Mathematics} % 专业名称
-\defensedate{2026年6月} % 论文答辩日期
+\title{中文标题}{English Title}
+\author{作者}{Author}
+\studentid{作者学号}
+\supervisor{导师中文名}{导师中文职称}{导师英文名}{导师英文职称}
+         % 参数：{导师中文名}{导师中文职称}{导师英文名}{导师英文职称}
+\degree{硕士}{Master}               % 学位级别，默认硕士/Master
+\specialty{数学}{Mathematics}       % 学科专业，默认数学/Mathematics
+\subdate{2026年3月}                 % 论文提交日期
+\defensedate{2026年6月}{June, 2026} % 论文答辩日期（两个参数！中英文各一）
+\grantdate{2026年6月}               % 授予学位日期
+\chairman{XXX}                      % 答辩委员会主席
+\reviewer{YYY}                      % 论文评阅人
+% \schoolcode{10225}                % 学校代码，默认10225，一般无需修改
+% \university{东北林业大学}{Northeast Forestry University} % 默认值，一般无需修改
 
+%==================================================%
+% 正文开始
+%==================================================%
 \begin{document}
-% 显示封面
+
+%==================================================%
+% 二、封面
+%==================================================%
 \makecover
 
-% 中文摘要环境, 请在此环境内编写中文摘要
+%==================================================%
+% 三、中文摘要
+%    参数说明：
+%      [cn]   — 语言选项（cn=中文摘要）
+%      [1]    — 起始页码（中文摘要从第1页开始）
+%      {关键词} — 中文关键词用"；"分隔
+%==================================================%
 \begin{abstract}[cn][1]{证据深度学习；不确定性估计；分类问题；正则化约束}
-这是中文摘要的内容，摘要的内容一般包括研究背景、研究目的、研究方法、研究结果和结论等。摘要应简明扼要，突出重点，
-避免使用过于专业的术语和缩略语。中文摘要一般在300字左右。
+这是中文摘要的内容。摘要的内容一般包括研究背景、研究目的、研究方法、研究结果和结论等。
+摘要应简明扼要，突出重点，避免使用过于专业的术语和缩略语。中文摘要一般在300字左右。
 \end{abstract}
 
-% 英文摘要环境, 请在此环境内编写英文摘要
-\begin{abstract}[en][2]{Evidence Deep Learning; Uncertainty Estimation; Classification Tasks; Regularization Constraints}
-This is English abstract, the content of the abstract generally includes research background, 
-research purpose, research methods, research results and conclusions. The abstract should be concise 
-and highlight the key points, avoiding overly professional terms and abbreviations. The English abstract 
+%==================================================%
+% 四、英文摘要
+%    参数说明：
+%      [en]   — 语言选项（en=英文摘要）
+%      [2]    — 起始页码（英文摘要从第2页开始）
+%      {关键词} — 英文关键词用 "; \sep" 分隔
+%==================================================%
+\begin{abstract}[en][2]{Evidence Deep Learning;\sep Uncertainty Estimation;\sep Classification Tasks;\sep Regularization Constraints}
+This is the English abstract. The content of the abstract generally includes research background,
+research purpose, research methods, research results and conclusions. The abstract should be concise
+and highlight the key points, avoiding overly professional terms and abbreviations. The English abstract
 is generally about 300 words.
 \end{abstract}
 
-% 目录
+%==================================================%
+% 五、目录（自动生成）
+%==================================================%
 \content
 
-% 论文正文环境
+%==================================================%
+% 六、正文
+%     必须在 thesis 环境内编写
+%     建议：将各章节分别放在 sections/ 文件夹中，
+%           用 \input 引入，方便管理
+%==================================================%
 \begin{thesis}
-    % 建议按照以下形式进行正文内容的编写
-    % 将所有的章节放在sections文件夹中, 每一章节使用的图片按照pictures->chapter number->image name的形式进行命名
-    % 例如：第一章的图片放在pictures->chapter1->image name.png中
-    % \input{sections/chapter1.tex}
-    % \input{sections/chapter2.tex}
-    % \input{sections/chapter3.tex}
 
-\end{thesis} 
+% ============ 第1章 绪论 ============
+\section{绪论}
 
-% % 附录环境, 请在此环境内编写附录
+\subsection{研究背景与意义}
+
+这里是研究背景与意义的正文内容。正文使用小四号宋体，行间距由模板自动设置。
+正文中的引用使用 \verb|\cite| 命令，如\cite{B-UMethod1}；也可以使用上标引用 \verb|\citeup|，
+如\citeup{B-UMethod2}。
+
+\subsection{国内外研究现状}
+
+国内外研究现状的正文内容。建议使用 \verb|\input| 引入各章节文件，例如：
+% \input{sections/chapter1.tex}
+
+% ============ 第2章 理论基础（定理环境使用范例） ============
+\section{理论基础}
+
+\subsection{基本概念}
+
+下面是模板预定义的定理类环境使用范例：
+
+\begin{definition}[不确定性]
+不确定性是指由于信息不完整或知识不精确导致的认知状态。在机器学习中，
+不确定性通常分为\textbf{偶然不确定性}（aleatoric uncertainty）和
+\textbf{认知不确定性}（epistemic uncertainty）。
+\end{definition}
+
+\begin{theorem}[贝叶斯定理]
+设 $A$ 和 $B$ 为两个事件，且 $P(B) > 0$，则有：
+\begin{equation}
+    P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}.
+    \label{eq:bayes}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+由条件概率的定义 $P(A \mid B) = P(A \cap B) / P(B)$ 直接可得式 \eqref{eq:bayes}。
+\end{proof}
+
+\begin{lemma}
+若函数 $f$ 在区间 $[a,b]$ 上连续，则 $f$ 在该区间上一致连续。
+\end{lemma}
+
+\begin{proposition}
+对于任意分类任务，证据深度学习方法可以提供比传统 softmax 方法更可靠的不确定性估计。
+\end{proposition}
+
+\begin{deduction}
+由定理 2.1 可以直接推出：在二分类情形下，证据网络的输出等价于 Beta 分布的参数。
+\end{deduction}
+
+\begin{remark}
+\textbf{偶然不确定性}源于数据本身的噪声，无法通过增加数据量来消除；
+而\textbf{认知不确定性}源于模型知识的不足，可以通过增加训练数据来降低。
+\end{remark}
+
+\begin{example}
+考虑一个简单的 MNIST 手写数字分类任务。当输入图像模糊不清时，
+证据网络会为多个类别分配相近的证据量，从而反映出较高的不确定性。
+\end{example}
+
+\begin{property}[不确定性可分解性]
+总预测不确定性可以分解为偶然不确定性和认知不确定性之和。
+\end{property}
+
+% ============ 第3章 实验与分析（图表与引用范例） ============
+\section{实验与分析}
+
+\subsection{实验设置}
+
+实验采用的软硬件环境如下表所示：
+
+\begin{table}[H]
+    \centering
+    \caption{实验环境配置}
+    \label{tab:env}
+    \begin{tabular}{ll}
+        \toprule
+        配置项 & 参数 \\
+        \midrule
+        CPU      & Intel Core i7-12700H \\
+        GPU      & NVIDIA GeForce RTX 3060 \\
+        内存     & 16 GB \\
+        操作系统 & Ubuntu 22.04 \\
+        Python   & 3.10 \\
+        PyTorch  & 2.0 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{实验结果}
+
+实验结果如图 \ref{fig:example} 所示。图片建议存放在
+\verb|pictures/ChapterX/| 文件夹中，便于管理。
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.7\textwidth]{pictures/Chapter3/example.png}
+    \caption{实验结果示意图}
+    \label{fig:example}
+\end{figure}
+
+% 建议使用 \input 引入各章节：
+% \input{sections/chapter2.tex}
+% \input{sections/chapter3.tex}
+
+\end{thesis}
+
+%==================================================%
+% 七、附录
+%==================================================%
 \begin{Appendix}
-    % \input{sections/appendix.tex}
+附录内容可包含详细的数学推导、额外的实验数据等。
+% \input{sections/appendix.tex}
 \end{Appendix}
 
-% 结论环境, 请在此环境内编写结论
+%==================================================%
+% 八、结论
+%==================================================%
 \begin{conclusion}
-    % \input{sections/conclusion.tex}
+在此总结论文的主要工作和创新点。
+% \input{sections/conclusion.tex}
 \end{conclusion}
 
-\references{references.bib} % 参考文献
+%==================================================%
+% 九、参考文献
+%     参数：bib 文件名（不含 .bib 后缀）
+%     使用 xelatex → bibtex → xelatex → xelatex 编译
+%==================================================%
+\references{references}
 
-% 致谢环境, 请在此环境内编写致谢
+%==================================================%
+% 十、攻读学位期间发表的学术论文（可选）
+%==================================================%
+\begin{published}
+% 发表的论文列表...
+\end{published}
+
+%==================================================%
+% 十一、致谢
+%==================================================%
 \begin{acknowledgement}
-    % \input{sections/acknowledgement.tex}
+在此感谢导师的指导、同学和家人的支持。
+% \input{sections/acknowledgement.tex}
 \end{acknowledgement}
 
-% % 原创性声明和版权授权书命令
+%==================================================%
+% 十二、原创性声明与版权授权书
+%==================================================%
 \declaration
 
 \end{document} 
