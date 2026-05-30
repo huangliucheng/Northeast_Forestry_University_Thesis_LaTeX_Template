@@ -246,13 +246,13 @@
     ...
 \end{acknowledgement}
 \declaration                  % 声明
-```
-\begin{conclusion}
-    结论内容
+
+\begin{conclusion}            % 结论内容
+    ...
 \end{conclusion}
 ```
 
-### 2.7 参考文献
+### 12. 参考文献
 模板内对于参考文献提供了`\references`命令和`biblist`环境两种不同的文献设置样式
 
 对于使用文献管理器的同学, 可以通过文献管理器将论文中的参考文献导出为bibtex文件, 然后使用命令`\references{references.bib}`即可显示参考文献列表
@@ -265,7 +265,7 @@
     \bibitem ...
 \end{biblist}
 ```
-### 2.8 致谢
+### 13. 致谢
 致谢环境`acknowledgement`
 ```
 \begin{acknowledgement}
@@ -273,9 +273,9 @@
 \end{acknowledgement}
 ```
 
-## 3. 模板使用建议
+## 14. 模板使用建议
 
-### 3.1 正文内容
+### 14.1 正文内容
 论文正文的编写, 建议在`sections`文件夹下按照章节分文件进行编写:
 ```
 --sections
@@ -295,7 +295,7 @@
 ```
 这样的编写方式能够让使用者有条理地管理论文的内容, 并且当论文编译出错时, 也方便查找错误.
 
-### 3.2 论文图片
+### 14.2 论文图片
 论文中使用的图片, 同样建议按照章节放在`pictures`文件夹下同一管理:
 ```
 --pictures
@@ -307,5 +307,5 @@
     |--chapter n
         |--figure.png
 ```
-## 4. 注意事项
+## 15. 注意事项
 模板中的参考文献的样式为国标引用格式, 但是`\references`命令和`biblist`环境生成的参考文献列表会有些样式上的差别, 产生这种现象的原因在于`biblist`环境中的每个参考文献样式是由自己指定的, 而`\references`命令则是通过`gbt7714`宏包自动生成的样式. 如果一些学院对于参考文献存在特定的样式要求, 建议使用`biblist`环境生成参考文献.
