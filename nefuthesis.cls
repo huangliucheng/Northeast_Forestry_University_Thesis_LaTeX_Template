@@ -583,31 +583,44 @@
     \thispagestyle{empty}
     \begingroup
       \centering
-      {\heiti \xiaoer 学位论文原创性声明\par}
+      {\heiti \xiaoer \cnspacing[1.1em]{独创性声明}\par}
     \endgroup
     \vspace{0.8cm}
 
-    {\songti \sihao 
-    本人声明所呈交的论文是我个人在导师指导下进行的研究工作及取得的研究成果。尽我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包括为获得东北林业大学或其他教育机构的学位或证书而使用过的材料。与我一同工作的同志对本研究所做的任何贡献已在论文中作了明确的说明并表示了谢意。\par}
-    \vspace{2.5cm}
+    {\songti \sihao
+    \setlength{\parindent}{2em}
+    \indent 本人声明所呈交的论文是我个人在导师指导下进行的研究工作及取得的研究成果。尽我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包含为获得东北林业大学或其它教育机构的学位或证书而使用过的材料。与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确的说明并表示了谢意。\par}
+    \vspace{1.8cm}
 
-    {\songti \sihao 
-    作者签名：\quad\quad\quad\quad\quad\quad \quad\quad\quad 日期：\quad\quad\quad\quad 年 \quad\quad 月 \quad\quad 日}
-    \vspace{1.5cm}
+    {\songti \sihao
+    \noindent\hspace{2em}学位论文作者签名：\hfill 签字日期：\hspace{3em}年\hspace{2em}月\hspace{2em}日\hspace{2em}\par}
+    \vspace{2.2cm}
 
     \begingroup
       \centering
-      {\heiti \xiaoer 学位论文版权授权书\par}
+      {\heiti \xiaoer 学位论文版权使用授权书\par}
     \endgroup
     \vspace{0.8cm}
 
-    {\songti \sihao 
-    本学位论文作者同意授予东北林业大学对本论文全部内容的信息网络传播权、汇编权、发行权、转授权与复制权，具体包括但不限于将学位论文上传到有关数据库，
-    影印、缩印或扫描等手段保存、查阅、借阅、汇编等.
-    （保密的学位论文在解密后适用本授权书）\par}
-    \vspace{2.5cm}
+    {\songti \sihao
+    \setlength{\parindent}{2em}
+    \indent 本人完全了解东北林业大学有关保留、使用学位论文的规定，即：学校有权保留送交论文的复印件，允许论文被查阅和借阅；学校可以公布论文的全部或部分内容，可以采用影印、缩印或其他复制手段保存、汇编学位论文。\par
+    \noindent\hspace{2em}{\heiti （保密的论文在解密后应遵守此规定）}\par}
+    \vspace{1.35cm}
 
-    {\songti \sihao 
-    作者签名：\quad\quad\quad\quad\quad\quad \quad\quad\quad 日期：\quad\quad\quad\quad 年 \quad\quad 月 \quad\quad 日}
+    {\songti \sihao
+    \noindent\hspace{2em}\makebox[0.52\textwidth][l]{学位论文作者签名：}\makebox[0.36\textwidth][l]{导师签名：}\par
+    \vspace{0.85cm}
+
+    \noindent\hspace{2em}\makebox[0.52\textwidth][l]{签字日期：\hspace{2.4em}年\hspace{1.6em}月\hspace{1.6em}日}\makebox[0.36\textwidth][l]{签字日期：\hspace{2.4em}年\hspace{1.6em}月\hspace{1.6em}日}\par
+    \vspace{1.3cm}
+
+    \noindent 学位论文作者毕业后去向：\par
+    \vspace{0.35cm}
+
+    \noindent\makebox[0.58\textwidth][l]{工作单位：}\makebox[0.42\textwidth][l]{电话：}\par
+    \vspace{0.25cm}
+
+    \noindent\makebox[0.58\textwidth][l]{通讯地址：}\makebox[0.42\textwidth][l]{邮编：}\par}
 
 }
